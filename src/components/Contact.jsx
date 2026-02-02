@@ -1,14 +1,9 @@
 import { useState } from 'react'
 import BookingCalendar from './BookingCalendar'
 
-// KONFIGURACJA: Ustaw tutaj link do publicznego kalendarza iCloud
-// Aby uzyskać link:
-// 1. Otwórz Kalendarz na iPhone/Mac
-// 2. Wybierz kalendarz, który chcesz udostępnić
-// 3. Kliknij "Udostępnij kalendarz" (Share Calendar)
-// 4. Włącz "Kalendarz publiczny" (Public Calendar)
-// 5. Skopiuj link i wklej poniżej
-const CALENDAR_URL = null // np. 'https://p123-caldav.icloud.com/published/2/xxx...'
+// Link do publicznego kalendarza iCloud
+// Zamień webcal:// na https:// - to ten sam adres, tylko inny protokół
+const CALENDAR_URL = 'https://p111-caldav.icloud.com/published/2/MTcyNTk3MjMyMDAxNzI1OVZiYWHzbNXjLN9iASmRWFYJhpTf6olLOQscAss27l1N6mfy4apqJIAYpTLDwHrZ44jm6MPPOZrHeyc7VYpPUK0'
 
 function Contact() {
   const [formData, setFormData] = useState({

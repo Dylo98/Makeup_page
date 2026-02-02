@@ -120,6 +120,13 @@ function BookingCalendar({ onDateTimeSelect, selectedDateTime, calendarUrl }) {
   useEffect(() => {
     if (calendarUrl) {
       fetchCalendarData(calendarUrl)
+
+      // Automatyczne odświeżanie co 5 minut
+      const interval = setInterval(() => {
+        fetchCalendarData(calendarUrl)
+      }, 5 * 60 * 1000)
+
+      return () => clearInterval(interval)
     }
   }, [calendarUrl, fetchCalendarData])
 

@@ -1,4 +1,14 @@
 import { useState } from 'react'
+import BookingCalendar from './BookingCalendar'
+
+// KONFIGURACJA: Ustaw tutaj link do publicznego kalendarza iCloud
+// Aby uzyskać link:
+// 1. Otwórz Kalendarz na iPhone/Mac
+// 2. Wybierz kalendarz, który chcesz udostępnić
+// 3. Kliknij "Udostępnij kalendarz" (Share Calendar)
+// 4. Włącz "Kalendarz publiczny" (Public Calendar)
+// 5. Skopiuj link i wklej poniżej
+const CALENDAR_URL = null // np. 'https://p123-caldav.icloud.com/published/2/xxx...'
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -6,7 +16,7 @@ function Contact() {
     email: '',
     phone: '',
     service: '',
-    date: '',
+    datetime: '',
     message: ''
   })
 
@@ -14,6 +24,13 @@ function Contact() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    })
+  }
+
+  const handleDateTimeSelect = (datetime) => {
+    setFormData({
+      ...formData,
+      datetime: datetime
     })
   }
 
@@ -26,7 +43,7 @@ function Contact() {
       email: '',
       phone: '',
       service: '',
-      date: '',
+      datetime: '',
       message: ''
     })
   }
@@ -34,13 +51,28 @@ function Contact() {
   return (
     <section id="contact" className="contact">
       <div className="container">
+        <div className="section-header">
+          <span className="section-label">Kontakt</span>
+          <h2 className="section-title">Umów się na wizytę</h2>
+          <p className="section-description">
+            Wybierz dogodny termin z kalendarza poniżej i wypełnij formularz, aby zarezerwować wizytę.
+            Odpowiadam na wiadomości w ciągu 24 godzin.
+          </p>
+        </div>
+
+        <div className="contact-calendar-section">
+          <BookingCalendar
+            onDateTimeSelect={handleDateTimeSelect}
+            selectedDateTime={formData.datetime}
+            calendarUrl={CALENDAR_URL}
+          />
+        </div>
+
         <div className="contact-grid">
           <div className="contact-info">
-            <span className="section-label">Kontakt</span>
-            <h2 className="section-title">Umów się na wizytę</h2>
+            <h3 className="contact-info-title">Dane kontaktowe</h3>
             <p className="contact-description">
               Masz pytania lub chcesz zarezerwować termin? Skontaktuj się ze mną!
-              Odpowiadam na wiadomości w ciągu 24 godzin.
             </p>
 
             <div className="contact-details">
@@ -169,16 +201,33 @@ function Contact() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="date">Preferowany termin</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                />
-              </div>
+              {formData.datetime && (
+                <div className="form-group">
+                  <label>Wybrany termin</label>
+                  <div className="selected-booking-datetime">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>{formData.datetime.replace(' ', ' o godzinie ')}</span>
+                  </div>
+                </div>
+              )}
+
+              {!formData.datetime && (
+                <div className="form-group">
+                  <label>Wybrany termin</label>
+                  <p className="form-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Wybierz termin z kalendarza powyżej
+                  </p>
+                </div>
+              )}
 
               <div className="form-group">
                 <label htmlFor="message">Wiadomość *</label>
